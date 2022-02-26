@@ -1,0 +1,4 @@
+[core]
+    remote = oridataremote
+['remote "oridataremote"']
+    url = s3://lesson3final
