@@ -1,4 +1,8 @@
 [core]
-    remote = oridataremote
+    remote = myremote
 ['remote "oridataremote"']
+    url = s3://lesson3final/original_data
+['remote "cleandataremote"']
+    url = s3://lesson3final/clean_data
+['remote "myremote"']
     url = s3://lesson3final

@@ -1,5 +1,6 @@
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-
+from ml.data import process_data
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -17,8 +18,10 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
+    lr = LogisticRegression(C=1.0)
+    lr.fit(X_train, y_train)
 
-    pass
+    return lr
 
 
 def compute_model_metrics(y, preds):
@@ -57,4 +60,54 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    preds = model.predict(X)
+    return preds
+
+
+def slicing_inference_performance(model, test, encoder, lb):
+    """ Run model inferences and return the predictions.
+
+    Inputs
+    ------
+    model : ???
+        Trained machine learning model.
+    X : np.array
+        Data used for prediction.
+    Returns
+    -------
+    preds : np.array
+        Predictions from the model.
+    """
+    slice_performance = {}
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
+    for each in cat_features:
+        for each_val in test[each].unique().tolist():
+            test_cat = test[test[each] == each_val].reset_index(drop=True)
+            X_test_cat, y_test_cat, _, _ = process_data(
+                test_cat, 
+                categorical_features=cat_features, 
+                label="salary", 
+                training=False,
+                encoder=encoder,
+                lb=lb
+            )
+
+            preds = model.predict(X_test_cat)
+            precision, recall, fbeta = compute_model_metrics(y_test_cat, preds)
+
+            slice_performance[f"{each}:{each_val}"] = {
+                "precision": precision,
+                "recall": recall,
+                "fbeta": fbeta
+            }
+    return slice_performance
+    
