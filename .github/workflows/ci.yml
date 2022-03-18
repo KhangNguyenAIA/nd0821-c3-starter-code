@@ -40,7 +40,7 @@ jobs:
         dvc pull
     - name: Test with pytest
       run: |
-        pytest
+        pytest ./starter/test_func.py
     - name: Copy files to the production website with the AWS CLI
       run: |
         aws s3 sync . s3://lesson3final
