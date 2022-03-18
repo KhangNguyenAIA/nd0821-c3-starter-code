@@ -9,7 +9,7 @@ from starter.ml.model import train_model, inference
 @pytest.fixture
 def data():
     """ Simple function to generate some fake Pandas data."""
-    df = pd.read_csv("./data/census.csv")
+    df = pd.read_csv("./starter/data/census.csv")
     return df
 
 def test_data_shape(data):
