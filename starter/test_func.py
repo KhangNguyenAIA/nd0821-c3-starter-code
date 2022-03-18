@@ -92,7 +92,7 @@ def test_inference(data):
         lb=lb
     )
 
-    lr_model = joblib.load("./model/model.pkl") 
+    lr_model = joblib.load("./starter/model/model.pkl") 
 
     preds = inference(lr_model, X_test)
     assert preds.shape[0] == len(X_test)
