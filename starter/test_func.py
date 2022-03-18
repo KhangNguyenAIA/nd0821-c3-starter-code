@@ -63,7 +63,7 @@ def test_train_model(data):
     assert lr_model is not None
 
 def test_inference(data):
-    train, test = train_test_split(data, test_size=0.20)
+    _, test = train_test_split(data, test_size=0.20)
 
     cat_features = [
         "workclass",
@@ -75,12 +75,10 @@ def test_inference(data):
         "sex",
         "native-country",
     ]
-    _, _, encoder, lb = process_data(
-        train, 
-        categorical_features=cat_features, 
-        label="salary", 
-        training=True
-    )
+
+    lr_model = joblib.load("./starter/model/model.pkl")
+    enc = joblib.load("./starter/model/encoder.enc")
+    lb = joblib.load("./starter/model/lb.enc")
 
     # Proces the test data with the process_data function.
     X_test, _, _, _ = process_data(
@@ -88,11 +86,9 @@ def test_inference(data):
         categorical_features=cat_features, 
         label="salary", 
         training=False,
-        encoder=encoder,
+        encoder=enc,
         lb=lb
     )
-
-    lr_model = joblib.load("./starter/model/model.pkl") 
 
     preds = inference(lr_model, X_test)
     assert preds.shape[0] == len(X_test)
