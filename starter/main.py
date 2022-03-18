@@ -50,9 +50,9 @@ async def say_hello():
 @app.post("/inference")
 async def get_inference(body: Value):
     data = pd.DataFrame.from_dict(body)
-    lr_model = joblib.load("./model/model.pkl") 
-    enc = joblib.load("./model/encoder.enc")
-    lb = joblib.load("./model/lb.enc")
+    lr_model = joblib.load("./starter/model/model.pkl") 
+    enc = joblib.load("./starter/model/encoder.enc")
+    lb = joblib.load("./starter/model/lb.enc")
 
     X, _, _, _ = process_data(data, 
                             categorical_features=cat_features, 
