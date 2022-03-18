@@ -6,3 +6,5 @@
     url = s3://lesson3final/clean_data
 ['remote "myremote"']
     url = s3://lesson3final
+['remote "modelremote"']
+    url = s3://lesson3final/model
