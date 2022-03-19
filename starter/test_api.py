@@ -6,20 +6,20 @@ client = TestClient(app)
 
 # Test data 1
 test_data1 = {
-    "age": 26,
+    "age": 39,
     "workclass": "State-gov",
-    "fnlgt": 11400,
+    "fnlgt": 77516,
     "education": "Bachelors",
-    "education-num": 17,
+    "education-num": 13,
     "marital-status": "Never-married",
     "occupation": "Adm-clerical",
     "relationship": "Not-in-family",
-    "race": "Black",
+    "race": "White",
     "sex": "Male",
-    "capital-gain": 3000,
+    "capital-gain": 2174,
     "capital-loss": 0,
-    "hours-per-week": 50,
-    "native-country": "Vietnam"
+    "hours-per-week": 40,
+    "native-country": "United-States"
 }
 
 # Test data 2
@@ -30,7 +30,7 @@ test_data2 = {
     "education": "Bachelors",
     "education-num": 16,
     "marital-status": "Married-civ-spouse",
-    "occupation": "Exec_managerial",
+    "occupation": "Exec-managerial",
     "relationship": "Husband",
     "race": "White",
     "sex": "Female",
@@ -46,22 +46,20 @@ def test_get_root():
     '''
     r = client.get("/")
     assert r.status_code == 200
-    assert r.json() == {"Greeting": "Welcome!"}
+    assert r.json() == {"greeting": "Hello World!"}
 
 
 def test_post_predict_less_than_50k():
     '''
         Test that predicted value is less than 50k
     '''
-    r = client.post("/predict", json=test_data1)
-    assert r.status_code == 200
-    assert r.json() == {'prediction': 'Salary <= 50k'}
+    r = client.post("/inference", json=test_data1)
+    assert r.json() == {'result': 'Salary <= 50k'}
 
 
 def test_post_predict_greater_than_50k():
     '''
         Test that predicted value is greater than 50k
     '''
-    r = client.post("/predict", json=test_data2)
-    assert r.status_code == 200
-    assert r.json() == {'prediction': 'Salary > 50k'}
+    r = client.post("/inference", json=test_data2)
+    assert r.json() == {'result': 'Salary > 50k'}

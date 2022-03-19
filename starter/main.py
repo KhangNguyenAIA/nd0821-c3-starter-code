@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 import pandas as pd
 import joblib
+import json
 from pydantic import BaseModel, Field
 
 from starter.ml.model import inference, process_data
@@ -49,10 +50,23 @@ async def say_hello():
 
 @app.post("/inference")
 async def get_inference(body: Value):
-    data = pd.DataFrame.from_dict(body)
-    lr_model = joblib.load("./starter/model/model.pkl") 
-    enc = joblib.load("./starter/model/encoder.enc")
-    lb = joblib.load("./starter/model/lb.enc")
+    data = pd.DataFrame([{"age" : body.age,
+                        "workclass" : body.workclass,
+                        "fnlgt" : body.fnlgt,
+                        "education" : body.education,
+                        "education-num" : body.education_num,
+                        "marital-status" : body.marital_status,
+                        "occupation" : body.occupation,
+                        "relationship" : body.relationship,
+                        "race" : body.race,
+                        "sex" : body.sex,
+                        "capital-gain" : body.capital_gain,
+                        "capital-loss" : body.capital_loss,
+                        "hours-per-week" : body.hours_per_week,
+                        "native-country" : body.native_country}])
+    lr_model = joblib.load("./model/model.pkl") 
+    enc = joblib.load("./model/encoder.enc")
+    lb = joblib.load("./model/lb.enc")
 
     X, _, _, _ = process_data(data, 
                             categorical_features=cat_features, 
