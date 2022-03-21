@@ -9,7 +9,7 @@ from starter.ml.model import train_model, inference
 @pytest.fixture
 def data():
     """ Simple function to generate some fake Pandas data."""
-    df = pd.read_csv("./starter/data/census.csv")
+    df = pd.read_csv("./data/census.csv")
     return df
 
 def test_data_shape(data):
@@ -76,9 +76,9 @@ def test_inference(data):
         "native-country",
     ]
 
-    lr_model = joblib.load("./starter/model/model.pkl")
-    enc = joblib.load("./starter/model/encoder.enc")
-    lb = joblib.load("./starter/model/lb.enc")
+    lr_model = joblib.load("./model/model.pkl")
+    enc = joblib.load("./model/encoder.enc")
+    lb = joblib.load("./model/lb.enc")
 
     # Proces the test data with the process_data function.
     X_test, _, _, _ = process_data(
