@@ -6,11 +6,11 @@ predicting.
 Author: Khang Nguyen
 Date: March 2022
 """
-import pickle
 import pandas as pd
 import numpy as np
 import logging
 import joblib
+import json
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
@@ -102,4 +102,6 @@ if __name__ == "__main__":
     slice_performance = slicing_inference_performance(
         model, test, enc, lb
     )
+    with open('../slice_output.txt', 'w') as file:
+        file.write(json.dumps(slice_performance))
     logger.info(slice_performance)
