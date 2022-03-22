@@ -10,7 +10,6 @@ from starter.ml.model import inference, process_data
 import os
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     print("Running DVC")
-    print(os.getcwd())
     os.system("ls")
     os.system("dvc config core.no_scm true")
     if os.system("dvc pull") != 0:
