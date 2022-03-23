@@ -39,13 +39,13 @@ There are 14 features using to train model and the size is 20% of whole dataset<
 
 
 ## Metrics
-_Please include the metrics used and your model's performance on those metrics._Precision, recall, fbeta (reason, value, formula) comment on result
 <p>
 Precision means the percentage of your results which are relevant. <br>
-Precision formula is TP/(TP+FP). Precision value of model is <br>
+Precision formula is TP/(TP+FP). Precision value of model is 0.71<br>
 Recall refers to the percentage of total relevant results correctly classified by your algorithm. <br>
-Recall formula is TP/(TP+FN). Recall value of model is <br>
-The F-beta score is the weighted harmonic mean of precision and recall, reaching its optimal value at 1 and its worst value at 0. In this model, the impact of precision and recall will be the same. F-beta value is
+Recall formula is TP/(TP+FN). Recall value of model is 0.25<br>
+The F-beta score is the weighted harmonic mean of precision and recall, reaching its optimal value at 1 and its worst value at 0. In this model, the impact of precision and recall will be the same. F-beta value is 0.37 <br>
+Based on recall score, model is biased toward positive label -> the dataset is imbalanced.
 </p>
 
 ## Ethical Considerations

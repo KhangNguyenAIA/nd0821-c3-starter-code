@@ -88,6 +88,9 @@ if __name__ == "__main__":
 
     preds = inference(lr_model, X_test)
     precision, recall, fbeta = compute_model_metrics(y_test, preds)
+    print(f"Test precision: {precision:.4f}")
+    print(f"Test recall: {recall:.4f}")
+    print(f"Test fbeta: {fbeta:.4f}\n")
     logger.info("Test Set Metrics:")
     logger.info(f"Test precision: {precision:.4f}")
     logger.info(f"Test recall: {recall:.4f}")
