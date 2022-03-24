@@ -16,20 +16,71 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 class Value(BaseModel):
-    age: int
-    workclass: str
-    fnlgt: int
-    education: str 
-    education_num: int = Field(alias='education-num')
-    marital_status: str = Field(alias='marital-status')
-    occupation: str
-    relationship: str
-    race: str
-    sex: str
-    capital_gain: int = Field(alias='capital-gain')
-    capital_loss: int = Field(alias='capital-loss')
-    hours_per_week: int = Field(alias='hours-per-week')
-    native_country: str = Field(alias='native-country')
+    age: int = Field(None, example=39)
+    workclass: str = Field(None, example="State-gov")
+    fnlgt: int = Field(None, example=77516)
+    education: str = Field(None, example="Bachelors")
+    education_num: int = Field(None, alias='education-num', example=13)
+    marital_status: str = Field(None, 
+                                alias='marital-status', 
+                                example="Never-married")
+    occupation: str = Field(None, example="Adm-clerical")
+    relationship: str = Field(None, example="Not-in-family")
+    race: str = Field(None, example="White")
+    sex: str = Field(None, example="Male")
+    capital_gain: int = Field(None, alias='capital-gain', example=2174)
+    capital_loss: int = Field(None, alias='capital-loss', example=0)
+    hours_per_week: int = Field(None, alias='hours-per-week', example=0)
+    native_country: str = Field(None, 
+                                alias='native-country', 
+                                example="United-States")
+
+    class Config:
+        schema_extra = {
+            'examples': {
+                "normal": {
+                    "summary": "A normal example",
+                    "description": "API workds well",
+                    "value": {
+                        "age": 39,
+                        "workclass": "State-gov",
+                        "fnlgt": 77516,
+                        "education": "Bachelors",
+                        "education-num": 13,
+                        "marital-status": "Never-married",
+                        "occupation": "Adm-clerical",
+                        "relationship": "Not-in-family",
+                        "race": "White",
+                        "sex": "Male",
+                        "capital-gain": 2174,
+                        "capital-loss": 0,
+                        "hours-per-week": 40,
+                        "native-country": "United-States"
+                    }
+                },
+                "invalid": {
+                    "summary": "An invalid example",
+                    "description": "API will fail",
+                    "value": {
+                        "age": '39',
+                        "workclass": "State-gov",
+                        "fnlgt": 77516,
+                        "education": "Bachelors",
+                        "education-num": 13,
+                        "marital-status": "Never-married",
+                        "occupation": "Adm-clerical",
+                        "relationship": "Not-in-family",
+                        "race": "White",
+                        "sex": "Male",
+                        "capital-gain": 2174,
+                        "capital-loss": 0,
+                        "hours-per-week": '40',
+                        "native-country": "United-States"
+                    },
+                },
+            }
+        }
+
 
 
 cat_features = [
@@ -53,48 +104,7 @@ async def say_hello():
 @app.post("/inference")
 async def get_inference(body: Value = Body(
     ...,
-    examples={
-        "normal": {
-            "summary": "A normal example",
-            "description": "API workds well",
-            "value": {
-                "age": 39,
-                "workclass": "State-gov",
-                "fnlgt": 77516,
-                "education": "Bachelors",
-                "education-num": 13,
-                "marital-status": "Never-married",
-                "occupation": "Adm-clerical",
-                "relationship": "Not-in-family",
-                "race": "White",
-                "sex": "Male",
-                "capital-gain": 2174,
-                "capital-loss": 0,
-                "hours-per-week": 40,
-                "native-country": "United-States"
-            }
-        },
-        "invalid": {
-            "summary": "An invalid example",
-            "description": "API will fail",
-            "value": {
-                "age": '39',
-                "workclass": "State-gov",
-                "fnlgt": 77516,
-                "education": "Bachelors",
-                "education-num": 13,
-                "marital-status": "Never-married",
-                "occupation": "Adm-clerical",
-                "relationship": "Not-in-family",
-                "race": "White",
-                "sex": "Male",
-                "capital-gain": 2174,
-                "capital-loss": 0,
-                "hours-per-week": '40',
-                "native-country": "United-States"
-            }
-        }
-    }
+    examples=Value.Config.schema_extra['examples']
 )):
     data = pd.DataFrame([{"age" : body.age,
                         "workclass" : body.workclass,
