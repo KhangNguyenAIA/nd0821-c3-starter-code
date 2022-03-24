@@ -1,5 +1,5 @@
 # Put the code for your API here.
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 import pandas as pd
 import joblib
 import json
@@ -19,7 +19,7 @@ class Value(BaseModel):
     age: int
     workclass: str
     fnlgt: int
-    education: str
+    education: str 
     education_num: int = Field(alias='education-num')
     marital_status: str = Field(alias='marital-status')
     occupation: str
@@ -30,6 +30,7 @@ class Value(BaseModel):
     capital_loss: int = Field(alias='capital-loss')
     hours_per_week: int = Field(alias='hours-per-week')
     native_country: str = Field(alias='native-country')
+
 
 cat_features = [
     "workclass",
@@ -50,7 +51,51 @@ async def say_hello():
     return {"greeting": "Hello World!"}
 
 @app.post("/inference")
-async def get_inference(body: Value):
+async def get_inference(body: Value = Body(
+    None,
+    example={
+        "normal": {
+            "summary": "A normal example",
+            "description": "API workds well",
+            "value": {
+                "age": 39,
+                "workclass": "State-gov",
+                "fnlgt": 77516,
+                "education": "Bachelors",
+                "education-num": 13,
+                "marital-status": "Never-married",
+                "occupation": "Adm-clerical",
+                "relationship": "Not-in-family",
+                "race": "White",
+                "sex": "Male",
+                "capital-gain": 2174,
+                "capital-loss": 0,
+                "hours-per-week": 40,
+                "native-country": "United-States"
+            }
+        },
+        "invalid": {
+            "summary": "An invalid example",
+            "description": "API will fail",
+            "value": {
+                "age": '39',
+                "workclass": "State-gov",
+                "fnlgt": 77516,
+                "education": "Bachelors",
+                "education-num": 13,
+                "marital-status": "Never-married",
+                "occupation": "Adm-clerical",
+                "relationship": "Not-in-family",
+                "race": "White",
+                "sex": "Male",
+                "capital-gain": 2174,
+                "capital-loss": 0,
+                "hours-per-week": '40',
+                "native-country": "United-States"
+            }
+        }
+    }
+)):
     data = pd.DataFrame([{"age" : body.age,
                         "workclass" : body.workclass,
                         "fnlgt" : body.fnlgt,
