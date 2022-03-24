@@ -52,7 +52,7 @@ async def say_hello():
 
 @app.post("/inference")
 async def get_inference(body: Value = Body(
-    None,
+    ...,
     examples={
         "normal": {
             "summary": "A normal example",
